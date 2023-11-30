@@ -5,6 +5,7 @@ config()
 export const env = createEnv({
     server: {
         DATABASE_URL: z.string(),
+        PORT: z.string()
     },
     runtimeEnv: process.env,
 });
