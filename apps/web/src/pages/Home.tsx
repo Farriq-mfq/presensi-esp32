@@ -1,4 +1,8 @@
 export default function Home() {
-  
-  return <h1 className="text-3xl font-bold underline">HALAMAN DASHBOARD</h1>;
+  return (
+    // <div className="grid grid-cols-1 lg:grid-cols-4">
+    //   <div className="bg-white shadow-xl p-5">Lorem</div>
+    // </div>
+    <p>HOE PAGE</p>
+  );
 }

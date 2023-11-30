@@ -1,0 +1,5 @@
+{
+  "extends": "@presensi/typescript-config/base.json",
+  "exclude": ["node_modules"],
+  "include": ["src/index.ts"]
+}

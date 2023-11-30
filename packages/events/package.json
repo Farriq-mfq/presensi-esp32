@@ -1,0 +1,16 @@
+{
+  "name": "@presensi/events",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup"
+  },
+  "devDependencies": {
+    "@presensi/typescript-config": "workspace:*",
+    "@types/node": "^20.10.1",
+    "tsup": "^8.0.1"
+  },
+  "author": "farriqmfq",
+  "license": "ISC"
+}
