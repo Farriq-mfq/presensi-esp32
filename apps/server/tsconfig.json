@@ -1,0 +1,7 @@
+{
+  "extends": "@presensi/typescript-config/base.json",
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "outDir": "dist"
+  }
+}
