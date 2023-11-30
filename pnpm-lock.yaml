@@ -175,6 +175,9 @@ importers:
       '@types/node':
         specifier: ^20.10.1
         version: 20.10.1
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.5
       tsup:
         specifier: ^8.0.1
         version: 8.0.1

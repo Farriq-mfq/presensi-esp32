@@ -1,3 +1,3 @@
-export const eventsName = {
-    NAME: "NAME"
+export default {
+    WEB_CONNECT: "WEB_CONNECT"
 }
