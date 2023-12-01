@@ -3,6 +3,7 @@ import { env } from "./env";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { WEB_CONNECT } from '@presensi/events'
+import { prisma } from "@presensi/db";
 const app = express()
 
 const server = createServer(app)

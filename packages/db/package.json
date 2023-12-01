@@ -1,0 +1,31 @@
+{
+  "name": "@presensi/db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./src/client.ts"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate"
+  },
+  "author": "farriqmfq",
+  "license": "ISC",
+  "devDependencies": {
+    "@presensi/typescript-config": "workspace:*",
+    "@types/node": "^20.10.1",
+    "prisma": "^5.6.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.6.0"
+  }
+}
