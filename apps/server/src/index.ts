@@ -7,15 +7,32 @@ const app = express()
 
 const server = createServer(app)
 const io = new Server(server, {
+    // fix connect to esp32
     cors: {
-        origin: 'http://localhost:5173'
-    }
+        origin: '*',
+        methods: ["GET", "POST"],
+        credentials: true,
+    },
+    allowEIO3: true
 })
 
 io.on('connection', (socket) => {
     console.log(`CONNECTED CLIENT ${socket.connected}`)
-    socket.on(WEB_CONNECT, (status) => {
-        console.log(`CONNECTED WEB: ${status}`)
+    // socket.on(WEB_CONNECT, (status) => {
+    //     console.log(`CONNECTED WEB: ${status}`)
+    // })
+
+    socket.on("TEST", () => {
+        console.log("test running");
+        io.emit("ONLAMPU", 1)
+    })
+
+    socket.on("STATE_LAMPU", py => {
+        io.emit("STATE_LAMBU_WEB", py)
+    })
+
+    socket.on("ESP", (status) => {
+        console.log(`CONNECTEDs : ${status}`)
     })
 })
 
