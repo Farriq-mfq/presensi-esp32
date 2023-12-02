@@ -4,7 +4,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "dev": "rimraf ./dist && tsup --watch",
+    "dev:events": "rimraf ./dist && tsup --watch",
     "build": "rimraf ./dist && tsup"
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
-import eventsName from './events'
-const { WEB_CONNECT } = eventsName
-export {
-    WEB_CONNECT,
-};
+export default {
+    WEB_CONNECT: "WEB_CONNECT",
+    IOT_CONNECT: "IOT_CONNECT",
+    WEB_MODE: "WEB_MODE",
+    IOT_MODE: "IOT_MODE",
+}

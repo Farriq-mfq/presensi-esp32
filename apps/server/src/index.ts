@@ -1,14 +1,16 @@
+import events from '@presensi/events';
+import cors from 'cors';
 import express from "express";
-import { env } from "./env";
 import { createServer } from "http";
-import { Server } from "socket.io";
-import { WEB_CONNECT } from '@presensi/events'
-import { prisma } from "@presensi/db";
+import { Server, Socket } from "socket.io";
+import modeController from "./controllers/modeContorller";
+import { env } from "./env";
+import { ModeType } from "./types";
+import validate from './utils/validation';
+import { valiationMode } from './validations';
 const app = express()
-
 const server = createServer(app)
 const io = new Server(server, {
-    // fix connect to esp32
     cors: {
         origin: '*',
         methods: ["GET", "POST"],
@@ -17,25 +19,56 @@ const io = new Server(server, {
     allowEIO3: true
 })
 
-io.on('connection', (socket) => {
+app.use(cors({
+    origin: "*",
+    methods: ["POST", "GET", "PUT", "DELETE", "PATCH"],
+    credentials: true
+}))
+
+app.use(express.json())
+// check connection
+io.on('connection', async (socket) => {
     console.log(`CONNECTED CLIENT ${socket.connected}`)
-    // socket.on(WEB_CONNECT, (status) => {
-    //     console.log(`CONNECTED WEB: ${status}`)
-    // })
 
-    socket.on("TEST", () => {
-        console.log("test running");
-        io.emit("ONLAMPU", 1)
+    socket.on(events.WEB_CONNECT, (payload: string) => {
+        console.log(`CONNECTED WEB: ${payload}`)
     })
 
-    socket.on("STATE_LAMPU", py => {
-        io.emit("STATE_LAMBU_WEB", py)
-    })
+    socket.on(events.IOT_CONNECT, (payload: string) => [
+        console.log(`CONNECTED IOT: ${payload}`)
+    ])
+    const modes = await prisma?.mode.findMany()
+    if (modes?.length) {
+        socket.emit(events.IOT_MODE, modes[0]?.iot_mode)
+    }
 
-    socket.on("ESP", (status) => {
-        console.log(`CONNECTEDs : ${status}`)
+    socket.on(events.WEB_MODE, async (payload: ModeType) => {
+        const modes = await prisma?.mode.findMany()
+        if (modes?.length) {
+            const mode = modes[0];
+            await prisma?.$transaction([
+                prisma?.mode.delete({
+                    where: {
+                        iot_mode: mode?.iot_mode
+                    }
+                }),
+                prisma?.mode.create({
+                    data: {
+                        iot_mode: payload
+                    }
+                })])
+        } else {
+            await prisma?.mode.create({
+                data: {
+                    iot_mode: payload
+                }
+            })
+        }
+        io.emit(events.IOT_MODE, payload)
     })
 })
+
+app.get('/mode', modeController.getMode)
 
 server.listen(env.PORT, () => {
     console.log(`SERVER RUNNING AT : ws://localhost:${env.PORT}`)

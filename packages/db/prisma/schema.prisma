@@ -8,5 +8,25 @@ datasource db {
 }
 
 model users {
-  id String @id
+  id         BigInt      @id @default(autoincrement())
+  name       String      @db.VarChar(250)
+  username   String      @db.VarChar(250)
+  rfid_token String?     @db.Text
+  presences  presences[]
+}
+
+model presences {
+  id        BigInt   @id @default(autoincrement())
+  user      users    @relation(fields: [usersId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usersId   BigInt
+  createdAt DateTime @default(now())
+}
+
+enum ModeEnum {
+  REGISTER
+  PRESENSI
+}
+
+model mode {
+  iot_mode ModeEnum @unique @default(REGISTER)
 }

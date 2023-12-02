@@ -1,7 +1,5 @@
 import { io } from 'socket.io-client'
-import { WEB_CONNECT } from '@presensi/events'
+import events from '@presensi/events'
 const socket = io(`${process.env.SOCKET_SERVER}`)
-/**
- * check if web connected
- */
+socket.emit(events.WEB_CONNECT, "CONNECTED WITH WEB");
 export default socket

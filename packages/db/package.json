@@ -5,11 +5,8 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": "./src/client.ts"
-  },
   "scripts": {
-    "dev": "tsup --watch",
+    "dev:db": "tsup --watch",
     "build": "tsup",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",

@@ -48,7 +48,7 @@ export default function Button(
   return (
     <button
       {...props}
-      className={`px-3 py-2 rounded-md shadow-xl text-sm ${cn(
+      className={`px-3 py-2 rounded-md shadow-xl text-sm text-white ${cn(
         pickVariant(props.variant)
       )}`}
     >
