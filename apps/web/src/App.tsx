@@ -1,9 +1,14 @@
+import { QueryClient, QueryClientProvider } from "react-query";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
-import socket from "./utils/io";
 export default function App() {
-  console.log(socket)
+  const queryClient = new QueryClient();
   return (
-    <RouterProvider router={router} fallbackElement={<p>Initial Load...</p>} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider
+        router={router}
+        fallbackElement={<p>Initial Load...</p>}
+      />
+    </QueryClientProvider>
   );
 }

@@ -5,7 +5,7 @@ const char* ssid = "Halllo";
 const char* password = "farriqmfq";
 
 /// Socket.IO Settings ///
-char host[] = "192.168.10.151";                   // Socket.IO Server Address
+char host[] = "192.168.95.151";                   // Socket.IO Server Address
 int port = 4000;                                  // Socket.IO Port Address
 char path[] = "/socket.io/?transport=websocket";  // Socket.IO Base Path
 bool useSSL = false;                              // Use SSL Authentication

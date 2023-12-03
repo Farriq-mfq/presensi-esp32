@@ -1,40 +1,32 @@
-import { useEffect, useState } from "react";
+import events from "@presensi/events";
+import { useQuery } from "react-query";
 import Button from "../components/ui/Button";
 import instance from "../utils/axios";
 import socket from "../utils/io";
 export type ModeType = "PRESENSI" | "REGISTER";
-import events from "@presensi/events";
 export default function Mode() {
-  const [mode, setMode] = useState<ModeType | null>(null);
-  const [loading, setLoading] = useState(false);
   const handleChangeMode = async (mode: ModeType) => {
     socket.emit(events.WEB_MODE, mode);
-    getMode();
   };
+
+  socket.on(events.IOT_MODE, () => {
+    refetch();
+  });
 
   const getMode = async () => {
-    setLoading(true);
-    instance
-      .get("/mode")
-      .then((response) => {
-        const data = response.data.data;
-        setMode(data != null ? data.iot_mode : null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    const response = await instance.get("/mode");
+    return response.data;
   };
+  const { data, status, refetch } = useQuery("mode", getMode);
 
-  useEffect(() => {
-    getMode();
-  }, []);
   return (
     <>
-      {loading ? (
-        <>Loaind</>
-      ) : mode === null ? (
-        <>
+      {status === "loading" ? (
+        <div className="h-5 w-32 p-5 rounded-lg dark:bg-slate-700 bg-slate-300 animate-pulse"></div>
+      ) : data.data === null ? (
+        <div className="flex gap-3">
           <Button
+            variant="default"
             onClick={() => {
               handleChangeMode("PRESENSI");
             }}
@@ -42,23 +34,26 @@ export default function Mode() {
             PRESENSI
           </Button>
           <Button
+            variant="primary"
             onClick={() => {
               handleChangeMode("REGISTER");
             }}
           >
             REGISTER
           </Button>
-        </>
+        </div>
       ) : (
         <>
           MODE SEKARANG :{" "}
           <Button
-            variant={mode === 'PRESENSI' ? "secondary" : "primary"}
+            variant={data.data.iot_mode === "PRESENSI" ? "default" : "primary"}
             onClick={() => {
-              handleChangeMode(mode === "PRESENSI" ? "REGISTER" : "PRESENSI");
+              handleChangeMode(
+                data.data.iot_mode === "PRESENSI" ? "REGISTER" : "PRESENSI"
+              );
             }}
           >
-            {mode}
+            {data.data.iot_mode}
           </Button>
         </>
       )}

@@ -25,7 +25,7 @@ export const buttonColors: typeButtonColors = [
   },
   {
     type: "default",
-    class: "bg-slate-800",
+    class: "bg-slate-800 dark:bg-neutral-600",
   },
   {
     type: "primary",
