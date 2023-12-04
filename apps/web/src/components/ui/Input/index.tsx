@@ -12,7 +12,7 @@ const Input = forwardRef<
       <input
         {...props}
         ref={ref}
-        className={`p-2 border mb-2 outline-none rounded-lg w-full placeholder:text-sm ${cn(
+        className={`p-2 border mb-2 dark:bg-neutral-700 dark:border-neutral-400 outline-none rounded-lg w-full placeholder:text-sm ${cn(
           props.className
         )}`}
       />
