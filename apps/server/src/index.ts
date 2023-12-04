@@ -7,7 +7,8 @@ import modeController from "./controllers/modeContorller";
 import { env } from "./env";
 import { ModeType } from "./types";
 import validate from './utils/validation';
-import { valiationMode } from './validations';
+import { valiationMode, validationUserRegister } from './validations';
+import userController from './controllers/userController';
 const app = express()
 const server = createServer(app)
 const io = new Server(server, {
@@ -66,9 +67,20 @@ io.on('connection', async (socket) => {
         }
         io.emit(events.IOT_MODE, payload)
     })
+
+    socket.on(events.RFID_REGISTER, (payload) => {
+        console.log(payload)
+        io.emit("RFID_WEB_RESULT_REGISTER", payload)
+    })
+    socket.on(events.RFID_PRESENSI, (payload) => {
+        console.log(payload)
+        io.emit("RFID_WEB_RESULT_PRESENSI", payload)
+    })
 })
 
 app.get('/mode', modeController.getMode)
+app.get('/users', userController.getUsers)
+app.post('/users', validate(validationUserRegister), userController.addUser)
 
 server.listen(env.PORT, () => {
     console.log(`SERVER RUNNING AT : ws://localhost:${env.PORT}`)

@@ -1,16 +1,21 @@
 #include <WiFi.h>
 #include <SocketIoClient.h>
+#include <MFRC522.h>
+#include <SPI.h>
+#define SS_PIN 5
+#define RST_PIN 22
 
+MFRC522 rfid(SS_PIN, RST_PIN);
 const char* ssid = "Halllo";
 const char* password = "farriqmfq";
 
 /// Socket.IO Settings ///
-char host[] = "192.168.95.151";                   // Socket.IO Server Address
-int port = 4000;                                  // Socket.IO Port Address
-char path[] = "/socket.io/?transport=websocket";  // Socket.IO Base Path
-bool useSSL = false;                              // Use SSL Authentication
-const char* sslFingerprint = "";                  // SSL Certificate Fingerprint
-bool useAuth = false;                             // use Socket.IO Authentication
+char host[] = "192.168.199.151";
+int port = 4000;
+char path[] = "/socket.io/?transport=websocket";
+bool useSSL = false;
+const char* sslFingerprint = "";
+bool useAuth = false;
 const char* serverUsername = "socketIOUsername";
 const char* serverPassword = "socketIOPassword";
 
@@ -18,34 +23,25 @@ SocketIoClient webSocket;
 WiFiClient client;
 
 
-bool led_state = true;
 String mode = "PRESENSI";
 void socket_Connected(const char* payload, size_t length) {
   Serial.println("Socket.IO Connected!");
 }
 
-void changeLedState(const char* payload, size_t length) {
-  Serial.print(payload);
-  if (led_state) {
-    led_state = false;
-    digitalWrite(LED_BUILTIN, HIGH);
-  } else {
-    led_state = true;
-    digitalWrite(LED_BUILTIN, LOW);
-  }
-  webSocket.emit("STATE_LAMPU", led_state ? "\"1\"" : "\"0\"");
-  Serial.print(led_state);
-}
 
 void changeMode(const char* payload, size_t length) {
   mode = String(payload);
   Serial.print(mode);
 }
 
+
+
 void setup() {
   Serial.begin(115200);
-  delay(10);
-
+  // init rfid
+  SPI.begin();
+  rfid.PCD_Init();
+  // end init rfid
   pinMode(LED_BUILTIN, OUTPUT);
 
   Serial.println();
@@ -67,7 +63,6 @@ void setup() {
 
   webSocket.on("connect", socket_Connected);
   webSocket.emit("IOT_CONNECT", "\"BERHASIL\"");
-  // webSocket.on("ONLAMPU", changeLedState);
   webSocket.on("IOT_MODE", changeMode);
   // Setup Connection
   if (useSSL) {
@@ -91,5 +86,33 @@ void loop() {
     delay(500);
   } else {
     digitalWrite(LED_BUILTIN, LOW);
+  }
+  handleRfid();
+}
+
+
+void handleRfid() {
+  if (rfid.PICC_IsNewCardPresent()) {
+    if (rfid.PICC_ReadCardSerial()) {
+      MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
+      Serial.print("RFID/NFC Tag Type: ");
+      Serial.println(rfid.PICC_GetTypeName(piccType));
+      Serial.print("UID:");
+      String uuid = "";
+      for (int i = 0; i < rfid.uid.size; i++) {
+        uuid += rfid.uid.uidByte[i];
+      }
+      if (mode.equals("REGISTER")) {
+        webSocket.emit("RFID_REGISTER", uuid.c_str());
+      } else {
+        webSocket.emit("RFID_PRESENSI", uuid.c_str());
+      }
+
+      Serial.print(uuid);
+      Serial.println();
+
+      rfid.PICC_HaltA();
+      rfid.PCD_StopCrypto1();
+    }
   }
 }

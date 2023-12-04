@@ -3,8 +3,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts';
 import Home from '../pages/Home';
 import Mode from '../pages/Mode';
-import Users from '../pages/Users';
 import Presensi from '../pages/Presensi';
+import Users from '../pages/Users';
+import AddUser from '../pages/Users/add';
 const router = createBrowserRouter([
     {
         id: 'root',
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
             {
                 path: '/users',
                 Component: Users
+            },
+            {
+                path: '/users/add',
+                Component: AddUser
             },
             {
                 path: '/mode',
