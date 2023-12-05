@@ -10,7 +10,7 @@ const char* ssid = "Halllo";
 const char* password = "farriqmfq";
 
 /// Socket.IO Settings ///
-char host[] = "192.168.72.151";
+char host[] = "192.168.164.151";
 int port = 4000;
 char path[] = "/socket.io/?transport=websocket";
 bool useSSL = false;

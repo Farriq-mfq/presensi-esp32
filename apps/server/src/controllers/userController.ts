@@ -25,7 +25,7 @@ const userController = {
             const { name, rfid_token, username } = req.body as {
                 username: string,
                 name: string,
-                rfid_token: number
+                rfid_token: string
             }
             const createUser = await prisma.users.create({
                 data: {
@@ -43,6 +43,25 @@ const userController = {
             return res.status(500).json({ message: "internal server error" })
         }
     },
+    deleteUser: async (req: Request, res: Response) => {
+        try {
+            const id = req.params.id as unknown as number;
+            if (id) {
+                await prisma.users.delete({
+                    where: {
+                        id
+                    }
+                })
+                return res.status(200).json({ message: 'delete user success' })
+            } else {
+                return res.status(400).json({ message: 'Invalid params id' })
+            }
+        } catch (e) {
+
+            return res.status(500).json({ message: 'internal server error' })
+        }
+    }
+
 }
 
 

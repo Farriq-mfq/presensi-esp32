@@ -20,6 +20,7 @@ model presences {
   user      users    @relation(fields: [usersId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   usersId   BigInt
   createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
 }
 
 enum ModeEnum {
