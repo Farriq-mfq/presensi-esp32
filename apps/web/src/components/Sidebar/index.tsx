@@ -3,7 +3,7 @@ import DarkModeTogle from "../DarkModelToggle";
 import BaseLink from "../ui/Link";
 export default function Sidebar() {
   return (
-    <aside className="w-[250px] top-0 bottom-0 fixed bg-slate-900 dark:bg-indigo-700 text-white rounded-r-3xl shadow-xl z-50 hidden lg:block">
+    <aside className="w-[250px] top-0 bottom-0 fixed bg-slate-900 dark:bg-indigo-700 text-white rounded-r-3xl shadow-xl z-50 translate-x-[-100%] lg:translate-x-0">
       <div className="py-5 text-center">
         <h1 className="font-semibold text-xl">SISTEM PRESENSI</h1>
         <DarkModeTogle />

@@ -1,13 +1,24 @@
 import { prisma } from "@presensi/db"
 import { Request, Response } from 'express'
-import * as z from 'zod'
-import { validationUserRegister } from "../validations"
+// link : https://stackoverflow.com/questions/75947475/prisma-typeerror-do-not-know-how-to-serialize-a-bigint
+BigInt.prototype.toJSON = function () {
+    const int = Number.parseInt(this.toString());
+    return int ?? this.toString();
+};
 const userController = {
     getUsers: async (req: Request, res: Response) => {
-        const users = await prisma.mode.findMany()
-        return res.json({
-            data: users
-        })
+        try {
+            const users = await prisma.users.findMany()
+            if (users.length) {
+                return res.status(200).json({
+                    data: users
+                })
+
+            }
+
+        } catch (e) {
+            return res.status(500).json({ message: "internal server error" })
+        }
     },
     addUser: async (req: Request, res: Response) => {
         try {

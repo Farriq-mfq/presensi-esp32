@@ -11,26 +11,48 @@ const router = createBrowserRouter([
         id: 'root',
         path: '/',
         Component: Layout,
+        handle: {
+            crumb: "Home"
+        },
         children: [
             {
                 index: true,
-                Component: Home
+                Component: Home,
             },
             {
                 path: '/users',
-                Component: Users
+                handle: {
+                    crumb: "Users"
+                },
+                children: [
+                    {
+                        index: true,
+                        Component: Users,
+                    },
+                    {
+                        path: '/users/add',
+                        Component: AddUser,
+                        handle: {
+                            crumb: "Add"
+                        },
+
+                    },
+                ]
             },
-            {
-                path: '/users/add',
-                Component: AddUser
-            },
+
             {
                 path: '/mode',
-                Component: Mode
+                Component: Mode,
+                handle: {
+                    crumb: "Mode"
+                },
             },
             {
                 path: '/presensi',
-                Component: Presensi
+                Component: Presensi,
+                handle: {
+                    crumb: "Presensi"
+                },
             },
         ]
     }

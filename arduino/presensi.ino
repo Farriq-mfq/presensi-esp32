@@ -10,14 +10,14 @@ const char* ssid = "Halllo";
 const char* password = "farriqmfq";
 
 /// Socket.IO Settings ///
-char host[] = "192.168.199.151";
+char host[] = "192.168.72.151";
 int port = 4000;
 char path[] = "/socket.io/?transport=websocket";
 bool useSSL = false;
 const char* sslFingerprint = "";
 bool useAuth = false;
-const char* serverUsername = "socketIOUsername";
-const char* serverPassword = "socketIOPassword";
+// const char* serverUsername = "socketIOUsername";
+// const char* serverPassword = "socketIOPassword";
 
 SocketIoClient webSocket;
 WiFiClient client;
@@ -72,9 +72,9 @@ void setup() {
   }
 
   // Handle Authentication
-  if (useAuth) {
-    webSocket.setAuthorization(serverUsername, serverPassword);
-  }
+  // if (useAuth) {
+  //   webSocket.setAuthorization(serverUsername, serverPassword);
+  // }
 }
 
 void loop() {

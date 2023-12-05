@@ -23,7 +23,7 @@ export default function AddUser() {
   } = useForm<z.infer<typeof registrasiSchema>>({
     resolver: zodResolver(registrasiSchema),
   });
-  const [rfid, setRfid] = useState<number | null>(12);
+  const [rfid, setRfid] = useState<number | null>(null);
   socket.on(events.RFID_WEB_RESULT_REGISTER, (data) => {
     setRfid(data);
   });
@@ -31,7 +31,7 @@ export default function AddUser() {
   const addUserService = async (data: {
     name: string;
     username: string;
-    rfid_token: number;
+    rfid_token: string;
   }): Promise<AxiosResponse> => {
     return await instance.post("/users", data);
   };
@@ -50,7 +50,7 @@ export default function AddUser() {
     await mutate({
       name: data.name,
       username: data.username,
-      rfid_token: rfid!,
+      rfid_token: rfid!.toString(),
     });
   };
 
