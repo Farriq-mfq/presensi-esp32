@@ -1,6 +1,8 @@
 
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from '../layouts';
+import AuthLayout from '../layouts/AuthLayout';
+import MainLayout from '../layouts/MainLayout';
+import Login from '../pages/Auth/Login';
 import Home from '../pages/Home';
 import Mode from '../pages/Mode';
 import Presensi from '../pages/Presensi';
@@ -10,7 +12,7 @@ const router = createBrowserRouter([
     {
         id: 'root',
         path: '/',
-        Component: Layout,
+        Component: MainLayout,
         handle: {
             crumb: "Dashboard"
         },
@@ -55,7 +57,18 @@ const router = createBrowserRouter([
                 },
             },
         ]
-    }
+    },
+    // {
+    //     id: "auth_root",
+    //     path: "/auth",
+    //     Component: AuthLayout,
+    //     children: [
+    //         {
+    //             path: "/login",
+    //             Component:Login
+    //         }
+    //     ]
+    // }
 ]);
 
 export default router

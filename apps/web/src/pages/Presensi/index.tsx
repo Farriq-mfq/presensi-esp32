@@ -7,6 +7,7 @@ import Card from "../../components/ui/Card";
 import instance from "../../utils/axios";
 import socket from "../../utils/io";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 export default function Users() {
   const [rfid, setRfid] = useState<string | null>(null);
   const addPresences = async (data: {
@@ -70,10 +71,13 @@ export default function Users() {
     handlePresences();
   }, [rfid]);
   return (
-    <div className="">
+    <>
+      <Helmet>
+        <title>Presensi</title>
+      </Helmet>
       <Card>
         <DataTable columns={columns} data={data?.data.data} pagination />
       </Card>
-    </div>
+    </>
   );
 }

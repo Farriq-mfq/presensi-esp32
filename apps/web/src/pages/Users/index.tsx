@@ -7,7 +7,7 @@ import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import instance from "../../utils/axios";
 import toast from "react-hot-toast";
-
+import { Helmet } from "react-helmet";
 export default function Users() {
   const deleteUserService = async (data: {
     id: string;
@@ -66,13 +66,16 @@ export default function Users() {
   ];
 
   return (
-    <div className="">
+    <>
+      <Helmet>
+        <title>Users</title>
+      </Helmet>
       <Card>
-        <Link className="underline" to={"/users/add"}>
+        <Link className="underline pl-3 inline-block mb-4 uppercase" to={"/users/add"}>
           Register
         </Link>
         <DataTable columns={columns} data={data?.data.data} pagination />
       </Card>
-    </div>
+    </>
   );
 }

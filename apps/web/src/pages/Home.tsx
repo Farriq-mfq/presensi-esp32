@@ -1,5 +1,7 @@
 import events from "@presensi/events";
+import { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { LuDisc2, LuList, LuUsers } from "react-icons/lu";
 import { TbDeviceDesktopBolt } from "react-icons/tb";
 import { useQuery } from "react-query";
@@ -16,6 +18,16 @@ export default function Home() {
     const response = await instance.get("/mode");
     return response.data;
   };
+
+  const getInfoService = async (): Promise<AxiosResponse> => {
+    return await instance.get("/info");
+  };
+
+  const { data: infoData, status: infoStatus } = useQuery(
+    "info",
+    getInfoService
+  );
+
   const {
     data: dataMode,
     status: statueMode,
@@ -29,46 +41,59 @@ export default function Home() {
     socket.emit("CALL_IOT_CONNECT", true);
   }, [connect, setConnect]);
   return (
-    <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
-      <Info className="bg-orange-500 text-white flex gap-3 flex-col">
-        <div className="flex items-center gap-2">
-          <LuUsers className="h-7 w-7" />
-          <span className="text-sm">Total users</span>
-        </div>
-        <h3 className="pl-1 text-lg font-semibold">12</h3>
-      </Info>
-      <Info className="bg-indigo-600 text-white flex gap-3 flex-col">
-        <div className="flex items-center gap-2">
-          <LuDisc2 className="h-7 w-7" />
-          <span className="text-sm">Mode Sekarang</span>
-        </div>
-        {statueMode === "success" && (
+    <>
+      <Helmet>
+        <title>Home</title>
+      </Helmet>
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
+        <Info className="bg-orange-500 text-white flex gap-3 flex-col">
+          <div className="flex items-center gap-2">
+            <LuUsers className="h-7 w-7" />
+            <span className="text-sm">Total users</span>
+          </div>
+          {infoStatus === "success" && (
+            <h3 className="pl-1 text-lg font-semibold">
+              {infoData.data.data.total_users}
+            </h3>
+          )}
+        </Info>
+        <Info className="bg-indigo-600 text-white flex gap-3 flex-col">
+          <div className="flex items-center gap-2">
+            <LuDisc2 className="h-7 w-7" />
+            <span className="text-sm">Mode Sekarang</span>
+          </div>
+          {statueMode === "success" && (
+            <h3 className="pl-1 text-lg font-semibold">
+              {dataMode.data != null ? dataMode.data.iot_mode : ""}
+            </h3>
+          )}
+        </Info>
+        <Info className="bg-cyan-600 text-white flex gap-3 flex-col">
+          <div className="flex items-center gap-2">
+            <LuList className="h-7 w-7" />
+            <span className="text-sm">Total Presensi</span>
+          </div>
+          {infoStatus === "success" && (
+            <h3 className="pl-1 text-lg font-semibold">
+              {infoData.data.data.total_presensi}
+            </h3>
+          )}
+        </Info>
+        <Info
+          className={`${cn(
+            connect ? `bg-green-500` : `bg-red-500`
+          )} text-white flex gap-3 flex-col`}
+        >
+          <div className="flex items-center gap-2">
+            <TbDeviceDesktopBolt className="h-7 w-7" />
+            <span className="text-sm">Koneksi Perangkat</span>
+          </div>
           <h3 className="pl-1 text-lg font-semibold">
-            {dataMode.data != null ? dataMode.data.iot_mode : ""}
+            {connect ? "Active" : "Nonactive"}
           </h3>
-        )}
-      </Info>
-      <Info className="bg-cyan-600 text-white flex gap-3 flex-col">
-        <div className="flex items-center gap-2">
-          <LuList className="h-7 w-7" />
-          <span className="text-sm">Total Presensi</span>
-        </div>
-        <h3 className="pl-1 text-lg font-semibold">12</h3>
-      </Info>
-      <Info
-        className={`${cn(
-          connect ? `bg-green-500` : `bg-red-500`
-        )} text-white flex gap-3 flex-col`}
-      >
-        <div className="flex items-center gap-2">
-          <TbDeviceDesktopBolt className="h-7 w-7" />
-          <span className="text-sm">Koneksi Perangkat</span>
-        </div>
-        <h3 className="pl-1 text-lg font-semibold">
-          {connect ? "Active" : "Nonactive"}
-        </h3>
-      </Info>
-    </div>
+        </Info>
+      </div>
+    </>
   );
 }
 

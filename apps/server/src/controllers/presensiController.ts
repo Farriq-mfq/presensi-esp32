@@ -3,13 +3,32 @@ import { Request, Response } from 'express'
 const presensiController = {
     getPresences: async (req: Request, res: Response) => {
         try {
-            const mode = await prisma.presences.findMany({
+            const presences = await prisma.presences.findMany({
                 include: {
                     user: true
                 }
             })
             return res.json({
-                data: mode
+                data: presences
+            })
+        } catch (e) {
+            return res.status(500).json({
+                message: "internal server error"
+            })
+        }
+    },
+    getPresencesToday: async (req: Request, res: Response) => {
+        try {
+            const presences = await prisma.presences.findMany({
+                include: {
+                    user: true
+                },
+                where: {
+                    createdAt: new Date()
+                }
+            })
+            return res.json({
+                data: presences
             })
         } catch (e) {
             return res.status(500).json({
@@ -60,7 +79,6 @@ const presensiController = {
                 })
             }
         } catch (e) {
-            console.log(e)
             return res.status(500).json({ message: "internal server error" })
         }
     }

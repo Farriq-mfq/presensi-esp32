@@ -4,6 +4,7 @@ import Button from "../components/ui/Button";
 import instance from "../utils/axios";
 import socket from "../utils/io";
 export type ModeType = "PRESENSI" | "REGISTER";
+import { Helmet } from "react-helmet";
 export default function Mode() {
   const handleChangeMode = async (mode: ModeType) => {
     socket.emit(events.WEB_MODE, mode);
@@ -21,6 +22,9 @@ export default function Mode() {
 
   return (
     <>
+      <Helmet>
+        <title>Mode</title>
+      </Helmet>
       {status === "loading" ? (
         <div className="h-5 w-32 p-5 rounded-lg dark:bg-slate-700 bg-slate-300 animate-pulse"></div>
       ) : data.data === null ? (

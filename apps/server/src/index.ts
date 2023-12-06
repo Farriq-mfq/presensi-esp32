@@ -10,6 +10,7 @@ import validate from './utils/validation';
 import { valiationMode, validationUserRegister } from './validations';
 import userController from './controllers/userController';
 import presensiController from './controllers/presensiController';
+import infoController from './controllers/infoController';
 const app = express()
 const server = createServer(app)
 const io = new Server(server, {
@@ -92,6 +93,7 @@ app.post('/users', validate(validationUserRegister), userController.addUser)
 app.delete('/users/:id', userController.deleteUser)
 app.get('/presences', presensiController.getPresences)
 app.post('/presences', presensiController.addPresences)
+app.get('/info', infoController.getInfo)
 
 server.listen(env.PORT, () => {
     console.log(`SERVER RUNNING AT : ws://localhost:${env.PORT}`)

@@ -12,7 +12,7 @@ export default function BreadCrumbs() {
         const endBreadcrumb = match.pathname === end.pathname;
         return (
           <Link
-            className={`text-sm text-slate-600 ${cn(
+            className={`text-sm text-slate-600 dark:text-white ${cn(
               !endBreadcrumb ? "after:content-['/'] after:mx-1" : ``
             )}`}
             to={match.pathname}

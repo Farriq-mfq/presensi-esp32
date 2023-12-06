@@ -14,6 +14,7 @@ import { AxiosResponse } from "axios";
 import instance from "../../utils/axios";
 import { toast } from "react-hot-toast";
 import { IoIosQrScanner } from "react-icons/io";
+import { Helmet } from "react-helmet";
 export default function AddUser() {
   const {
     register,
@@ -56,6 +57,9 @@ export default function AddUser() {
 
   return (
     <>
+      <Helmet>
+        <title>Add users</title>
+      </Helmet>
       {rfid ? (
         <Card>
           <form method="post" onSubmit={handleSubmit(onsubmit)}>

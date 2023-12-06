@@ -1,5 +1,9 @@
-import React from "react";
+import { Outlet } from "react-router-dom";
 
-export default function AuthLayout({ children }: React.PropsWithChildren) {
-  return <div>{children}</div>;
+export default function AuthLayout() {
+  return (
+    <div>
+      <Outlet />
+    </div>
+  );
 }
