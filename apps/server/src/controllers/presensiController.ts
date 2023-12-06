@@ -32,15 +32,27 @@ const presensiController = {
                 })
             }
 
+            const checkIfAlreadyPresence = await prisma.presences.findFirst({
+                where: {
+                    usersId: userRfid.id,
+                    createdAt: {
+                        equals: new Date(),
+                    }
+                }
+            })
+            if (checkIfAlreadyPresence) return res.status(400).json({ message: "Maaf anda sudah presensi" })
             const createPresences = await prisma.presences.create({
                 data: {
                     usersId: userRfid.id
+                },
+                include: {
+                    user: true
                 }
             })
 
             if (createPresences) {
                 res.status(200).json({
-                    message: "berhasil presensi"
+                    message: `Terimakasih ${createPresences.user.name} Berhasil Presensi`
                 })
             } else {
                 res.status(400).json({

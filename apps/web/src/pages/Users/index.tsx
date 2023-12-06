@@ -18,7 +18,10 @@ export default function Users() {
     return await instance.get("/users");
   };
 
-  const { data, refetch } = useQuery("users", getUserService);
+  const { data, refetch } = useQuery({
+    queryKey: "users",
+    queryFn: getUserService,
+  });
   const { mutate } = useMutation(deleteUserService, {
     onSuccess() {
       refetch();

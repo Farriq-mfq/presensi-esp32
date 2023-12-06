@@ -12,7 +12,7 @@ const router = createBrowserRouter([
         path: '/',
         Component: Layout,
         handle: {
-            crumb: "Home"
+            crumb: "Dashboard"
         },
         children: [
             {

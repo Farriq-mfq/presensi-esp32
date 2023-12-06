@@ -1,5 +1,5 @@
 import events from "@presensi/events";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import DataTable from "react-data-table-component";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "react-query";
@@ -25,12 +25,19 @@ export default function Users() {
   const { data, refetch } = useQuery("presensi", getPresencesService);
   const { mutate } = useMutation(addPresences, {
     onSuccess(data) {
-      console.log(data.data);
       refetch();
-      toast.success("Berhasil presensi");
+      toast.success(data.data.message);
     },
-    onError() {
-      toast.error("Terjadi kesalahan");
+    onError(e) {
+      const error = e as AxiosError;
+      if (error.response?.status === 400) {
+        toast.error((error.response?.data as any).message);
+      } else {
+        toast.error("Terjadi kesalahan");
+      }
+    },
+    onMutate() {
+      setRfid(null);
     },
   });
 
@@ -44,17 +51,23 @@ export default function Users() {
       selector: (row: any) => row.user.username,
     },
     {
-      name: "Waktu dan Tanggal",
-      selector: (row: any) => row.createdAt,
+      name: "Tanggal",
+      selector: (row: any) => {
+        const date = new Date(row.createdAt);
+        return `${date.getFullYear()} / ${date.getMonth()} / ${date.getDate()}`;
+      },
     },
   ];
 
-  useEffect(() => {
+  const handlePresences = async (): Promise<void> => {
     if (rfid != null) {
-      mutate({
+      await mutate({
         rfid_token: rfid!,
       });
     }
+  };
+  useEffect(() => {
+    handlePresences();
   }, [rfid]);
   return (
     <div className="">

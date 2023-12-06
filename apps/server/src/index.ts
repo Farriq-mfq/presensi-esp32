@@ -36,9 +36,16 @@ io.on('connection', async (socket) => {
         console.log(`CONNECTED WEB: ${payload}`)
     })
 
-    socket.on(events.IOT_CONNECT, (payload: string) => [
-        console.log(`CONNECTED IOT: ${payload}`)
-    ])
+    socket.on(events.IOT_CONNECT, (payload: string) => {
+        // console.log(`CONNECTED IOT: ${payload}`)
+        io.emit(events.IOT_CONNECT_WEB, true)
+    })
+
+    socket.on("CALL_IOT_CONNECT", (payload) => {
+        io.emit("RECEIVE_CALL_FROM_WEB_IOT", payload)
+    })
+
+
     const modes = await prisma?.mode.findMany()
     if (modes?.length) {
         socket.emit(events.IOT_MODE, modes[0]?.iot_mode)

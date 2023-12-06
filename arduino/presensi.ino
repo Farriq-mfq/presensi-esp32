@@ -10,7 +10,7 @@ const char* ssid = "Halllo";
 const char* password = "farriqmfq";
 
 /// Socket.IO Settings ///
-char host[] = "192.168.164.151";
+char host[] = "192.168.18.151";
 int port = 4000;
 char path[] = "/socket.io/?transport=websocket";
 bool useSSL = false;
@@ -32,6 +32,10 @@ void socket_Connected(const char* payload, size_t length) {
 void changeMode(const char* payload, size_t length) {
   mode = String(payload);
   Serial.print(mode);
+}
+
+void emitCallFromWeb(const char* payload, size_t length) {
+   webSocket.emit("IOT_CONNECT", "\"BERHASIL\"");
 }
 
 
@@ -64,6 +68,8 @@ void setup() {
   webSocket.on("connect", socket_Connected);
   webSocket.emit("IOT_CONNECT", "\"BERHASIL\"");
   webSocket.on("IOT_MODE", changeMode);
+  webSocket.on("RECEIVE_CALL_FROM_WEB_IOT", emitCallFromWeb);
+
   // Setup Connection
   if (useSSL) {
     webSocket.beginSSL(host, port, path, sslFingerprint);
