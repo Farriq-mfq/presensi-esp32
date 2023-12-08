@@ -2,15 +2,15 @@ import events from '@presensi/events';
 import cors from 'cors';
 import express from "express";
 import { createServer } from "http";
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
+import infoController from './controllers/infoController';
 import modeController from "./controllers/modeContorller";
+import presensiController from './controllers/presensiController';
+import userController from './controllers/userController';
 import { env } from "./env";
 import { ModeType } from "./types";
 import validate from './utils/validation';
-import { valiationMode, validationUserRegister } from './validations';
-import userController from './controllers/userController';
-import presensiController from './controllers/presensiController';
-import infoController from './controllers/infoController';
+import { validationUserRegister } from './validations';
 const app = express()
 const server = createServer(app)
 const io = new Server(server, {
@@ -42,8 +42,8 @@ io.on('connection', async (socket) => {
         io.emit(events.IOT_CONNECT_WEB, true)
     })
 
-    socket.on("CALL_IOT_CONNECT", (payload) => {
-        io.emit("RECEIVE_CALL_FROM_WEB_IOT", payload)
+    socket.on(events.CALL_IOT_CONNECT, (payload) => {
+        io.emit(events.RECEIVE_CALL_FROM_WEB_IOT, payload)
     })
 
 
@@ -79,11 +79,11 @@ io.on('connection', async (socket) => {
 
     socket.on(events.RFID_REGISTER, (payload) => {
         console.log(payload)
-        io.emit("RFID_WEB_RESULT_REGISTER", payload)
+        io.emit(events.RFID_WEB_RESULT_REGISTER, payload)
     })
     socket.on(events.RFID_PRESENSI, (payload) => {
         console.log(payload)
-        io.emit("RFID_WEB_RESULT_PRESENSI", payload)
+        io.emit(events.RFID_WEB_RESULT_PRESENSI, payload)
     })
 })
 

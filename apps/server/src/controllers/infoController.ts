@@ -10,8 +10,8 @@ const infoController = {
             const users = await prisma.users.count()
             const presences = await prisma.presences.count()
             const info: infoResponse = {
-                total_presensi: users,
-                total_users: presences
+                total_presensi: presences,
+                total_users: users
             }
             return res.status(200).json({
                 data: info

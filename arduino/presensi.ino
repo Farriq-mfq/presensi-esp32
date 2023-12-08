@@ -10,7 +10,7 @@ const char* ssid = "Halllo";
 const char* password = "farriqmfq";
 
 /// Socket.IO Settings ///
-char host[] = "192.168.112.151";
+char host[] = "192.168.199.151";
 int port = 4000;
 char path[] = "/socket.io/?transport=websocket";
 bool useSSL = false;
@@ -64,6 +64,7 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+
 
   webSocket.on("connect", socket_Connected);
   webSocket.emit("IOT_CONNECT", "\"BERHASIL\"");
