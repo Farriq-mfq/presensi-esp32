@@ -12,4 +12,18 @@ Project Sistem Presensi menggunakan Internet Of Think (esp32) dengan menggunakan
 - Arduino IDE
 
 ## Preview
-![Dashboard](./ss/dashboard.png)
+###### DASHBOARD
+
+![DASHBOARD](./ss/dashboard-desktop.png)
+
+###### USERS
+![USERS](./ss/users-desktop.png)
+
+###### USERS REGISTER
+![USERS REGISTER](./ss/register-users-desktop.png)
+
+###### MODE
+![MODE](./ss/mode-desktop.png)
+
+###### PRESENSI
+![PRESENSI](./ss/presensi-desktop.png)
